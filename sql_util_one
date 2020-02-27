@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sql语句占位符替换-动态语句版</title>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <style type="text/css">
+        * {
+            box-sizing: border-box;
+        }
+
+        div {
+        }
+
+        .left {
+            margin: 0px;
+            height: 100%;
+            width: 50%;
+            float: left;
+            display: inline-block;
+            background: orangered;
+        }
+
+        .right {
+            margin: 0px;
+            height: 100%;
+            width: 50%;
+            display: inline-block;
+            background: gold;
+        }
+
+        .top {
+            border: 1px solid #000000;
+            padding: 0px;
+            margin: auto;
+            height: 200px;
+            width: 1024px;
+        }
+
+        .bottom {
+            padding: 0px;
+            margin: auto;
+            height: 500px;
+            width: 800px;
+            background: forestgreen;
+        }
+
+        textarea {
+            border: 1px solid #000000;
+            margin: 0px;
+            width: 100%;
+            height: 100%;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="top">
+    <div class="left">
+        <textarea id="sql_before" cols="30" rows="10"></textarea>
+    </div>
+    <div class="right">
+        <textarea id="params" cols="30" rows="10"></textarea>
+    </div>
+</div>
+<div class="bottom">
+    <textarea id="result" cols="30" rows="10"></textarea>
+</div>
+<script type="text/javascript">
+    $('document').ready(function () {
+        $('#result').focus(sqlReplace);
+    })
+
+    function sqlReplace(){
+        var sql_before = $('#sql_before').val();
+        var paramStr = $('#params').val();
+        var paramArr = paramStr.replace('\r\n','\n').split('\n');
+        $.each(paramArr,function(i,item){
+            var params = item.split('\t');
+            if(params.length == 2 && params[1].trim()!=''){
+                sql_before = sql_before.replace(eval('/'+params[0]+'\\b/g'),"'"+params[1].trim()+"'");
+            }
+        })
+        $('#result').val(sql_before);
+        var result = $('#result')[0];
+        result.setSelectionRange(0,result.value.length);
+        debugger;
+        document.execCommand("copy");
+    }
+
+
+</script>
+</body>
+
+</html>
