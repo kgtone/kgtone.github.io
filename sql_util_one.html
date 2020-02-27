@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>sql语句占位符替换-动态语句版</title>
-    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous"></script>
     <style type="text/css">
         * {
             box-sizing: border-box;
@@ -72,19 +75,19 @@
         $('#result').focus(sqlReplace);
     })
 
-    function sqlReplace(){
+    function sqlReplace() {
         var sql_before = $('#sql_before').val();
         var paramStr = $('#params').val();
-        var paramArr = paramStr.replace('\r\n','\n').split('\n');
-        $.each(paramArr,function(i,item){
+        var paramArr = paramStr.replace('\r\n', '\n').split('\n');
+        $.each(paramArr, function (i, item) {
             var params = item.split('\t');
-            if(params.length == 2 && params[1].trim()!=''){
-                sql_before = sql_before.replace(eval('/'+params[0]+'\\b/g'),"'"+params[1].trim()+"'");
+            if (params.length == 2 && params[1].trim() != '') {
+                sql_before = sql_before.replace(eval('/' + params[0] + '\\b/g'), "'" + params[1].trim() + "'");
             }
         })
         $('#result').val(sql_before);
         var result = $('#result')[0];
-        result.setSelectionRange(0,result.value.length);
+        result.setSelectionRange(0, result.value.length);
         debugger;
         document.execCommand("copy");
     }
